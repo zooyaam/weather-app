@@ -1,8 +1,8 @@
 import React from "react";
+import * as Location from "expo-location";
 import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
 
-const { width: SCREEN_WIDTH1 } = Dimensions.get("window");
-const SCREEN_WIDTH = Dimensions.get("window").width;
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
   return (

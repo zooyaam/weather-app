@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
-
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
+  const [days, setDays] = useState([]);
   const [ok, setOk] = useState(true);
-  const ask = async () => {
+  const getWeather = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       setOk(false);
@@ -24,7 +24,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    ask();
+    getWeather();
   }, []);
 
   return (

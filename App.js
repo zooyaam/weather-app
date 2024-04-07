@@ -31,10 +31,17 @@ export default function App() {
     );
     setCity(location[0].city);
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
     );
     const json = await response.json();
-    setDays(json.daily);
+
+    setDays(
+      json.list.filter((weather) => {
+        if (weather.dt_txt.includes("03:00:00")) {
+          return weather;
+        }
+      })
+    );
   };
 
   useEffect(() => {
@@ -64,7 +71,7 @@ export default function App() {
           days.map((day, index) => (
             <View key={index} style={styles.day}>
               <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
+                {parseFloat(day.main.temp).toFixed(1)}
               </Text>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>

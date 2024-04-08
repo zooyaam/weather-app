@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
+import { Fontisto } from "@expo/vector-icons";
 import {
   View,
   StyleSheet,
@@ -11,6 +12,16 @@ import {
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const API_KEY = "9bebe07b840e4602599fb2da041e472f";
+
+const icons = {
+  Clouds: "cloudy",
+  Clear: "day-sunny",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Rain: "rains",
+  Drizzle: "rain",
+  Thunderstorm: "lightning",
+};
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
@@ -70,10 +81,18 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
+              <Text style={styles.daily}>
+                {new Date(day.dt * 1000).toDateString()}{" "}
+              </Text>
               <Text style={styles.temp}>
                 {parseFloat(day.main.temp).toFixed(1)}
               </Text>
               <Text style={styles.description}>{day.weather[0].main}</Text>
+              <Fontisto
+                icons={icons[day.weather[0].main]}
+                size={96}
+                color="white"
+              />
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
           ))
@@ -86,7 +105,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4f4ea",
+    backgroundColor: "#222822",
   },
   city: {
     flex: 1,
@@ -94,23 +113,31 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 40,
     fontWeight: "500",
+    color: "#f4f4ea",
     textAlign: "center",
-    marginTop: 60,
+    marginTop: 70,
   },
-  weather: {},
   day: {
     width: SCREEN_WIDTH,
     alignItems: "center",
   },
+  daily: {
+    fontSize: 25,
+    color: "#f4f4ea",
+  },
   temp: {
     fontSize: 110,
-    color: "#426B1F",
+    color: "#f4f4ea",
+    paddingTop: 50,
   },
   description: {
     fontSize: 40,
-    color: "#426B1F",
+    color: "#f4f4ea",
+    paddingTop: 35,
   },
   tinyText: {
     fontSize: 20,
+    color: "#f4f4ea",
+    paddingTop: 10,
   },
 });

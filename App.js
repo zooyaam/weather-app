@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import { Fontisto } from "@expo/vector-icons";
+
 import {
   View,
   StyleSheet,
@@ -82,17 +83,21 @@ export default function App() {
           days.map((day, index) => (
             <View key={index} style={styles.day}>
               <Text style={styles.daily}>
-                {new Date(day.dt * 1000).toDateString()}{" "}
+                {new Date(day.dt * 1000).toDateString()}
               </Text>
-              <Text style={styles.temp}>
-                {parseFloat(day.main.temp).toFixed(1)}
-              </Text>
+              <View>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  style={styles.icon}
+                  size={120}
+                  color="#f4f4ea"
+                />
+                <Text style={styles.temp}>
+                  {parseFloat(day.main.temp).toFixed(1)}
+                </Text>
+              </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
-              <Fontisto
-                icons={icons[day.weather[0].main]}
-                size={96}
-                color="white"
-              />
+
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
           ))
@@ -119,25 +124,31 @@ const styles = StyleSheet.create({
   },
   day: {
     width: SCREEN_WIDTH,
-    alignItems: "center",
   },
   daily: {
     fontSize: 25,
     color: "#f4f4ea",
+    textAlign: "center",
+    paddingBottom: 60,
   },
   temp: {
     fontSize: 110,
     color: "#f4f4ea",
-    paddingTop: 50,
+    paddingLeft: 70,
+  },
+  icon: {
+    paddingLeft: 210,
   },
   description: {
     fontSize: 40,
     color: "#f4f4ea",
-    paddingTop: 35,
+    paddingTop: 55,
+    textAlign: "center",
   },
   tinyText: {
     fontSize: 20,
     color: "#f4f4ea",
     paddingTop: 10,
+    textAlign: "center",
   },
 });

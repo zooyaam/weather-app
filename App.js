@@ -41,19 +41,27 @@ export default function App() {
       { latitude, longitude },
       { useGoogleMaps: false }
     );
-    setCity(location[0].city);
-    const response = await fetch(
+    setCity(location[0].city + "  " + location[0].district);
+
+    const forecast = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
     );
-    const json = await response.json();
-
-    setDays(
-      json.list.filter((weather) => {
-        if (weather.dt_txt.includes("03:00:00")) {
-          return weather;
-        }
-      })
+    const current = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
     );
+    const forecastJson = await forecast.json();
+    const currentJson = await current.json();
+
+    setDays([
+      currentJson,
+      ...forecastJson.list
+        .filter((weather) => {
+          if (weather.dt_txt.includes("03:00:00")) {
+            return weather;
+          }
+        })
+        .slice(1),
+    ]);
   };
 
   useEffect(() => {
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cityName: {
-    fontSize: 40,
+    fontSize: 33,
     fontWeight: "500",
     color: "#f4f4ea",
     textAlign: "center",
